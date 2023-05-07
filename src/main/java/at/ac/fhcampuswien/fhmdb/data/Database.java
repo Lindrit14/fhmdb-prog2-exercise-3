@@ -54,4 +54,5 @@ public class Database {
     public Dao<WatchlistMovieEntity, Long> getDao() {
         return this.dao;
     }
+
 }

@@ -3,13 +3,15 @@ package at.ac.fhcampuswien.fhmdb.ui;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.stream.Collectors;
 
 public class MovieCell extends ListCell<Movie> {
@@ -49,6 +51,8 @@ public class MovieCell extends ListCell<Movie> {
             }
             setGraphic(layout);
         });
+
+
     }
 
     private VBox getDetails() {
@@ -103,5 +107,51 @@ public class MovieCell extends ListCell<Movie> {
             setGraphic(layout);
         }
     }
+
+    //https://www.youtube.com/watch?v=rhlchwZstcw&t=396s
+    //UI for displaying Exceptions to the User during Runtime in the Application
+    public static void showExceptionAlert(String title, String headerText, String contentText, Exception ex) {
+        // Create a new alert  with the given error
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+
+        // create extra ui component so that the whole stack trace gets put into there and does not fill up the whole window
+        // stack trace need to be converted into a string? Is it not already a string?
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        ex.printStackTrace(pw);
+        String exceptionText = sw.toString();
+
+        //label and textarea for the stack tace
+        Label label = new Label("Exception stacktrace:");
+        TextArea textArea = new TextArea(exceptionText);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        //styling options
+
+        //fill the dead space
+        textArea.setMaxWidth(Double.MAX_VALUE);
+        textArea.setMaxHeight(Double.MAX_VALUE);
+        GridPane.setVgrow(textArea, Priority.ALWAYS);
+        GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+        //layout stuff, like grid in css, so
+        GridPane expContent = new GridPane();
+        expContent.setMaxWidth(Double.MAX_VALUE);
+        expContent.add(label, 0, 0);
+        expContent.add(textArea, 0, 1);
+
+        // set the additional info to the Alert dialog
+        alert.getDialogPane().setExpandableContent(expContent);
+
+        //stays open until client closes it
+        alert.showAndWait();
+    }
+
+
+
 }
 

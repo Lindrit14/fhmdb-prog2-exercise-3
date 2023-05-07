@@ -91,6 +91,7 @@ public class WatchlistMovieEntity {
         return rating;
     }
 
+
     public Movie createMovie(){
         List<Genre> genres = Arrays.stream(this.genres.split(","))
                 .map(Genre::valueOf)

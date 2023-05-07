@@ -12,13 +12,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static at.ac.fhcampuswien.fhmdb.ui.MovieCell.showExceptionAlert;
 
 public class HomeController implements Initializable {
     @FXML
@@ -43,6 +50,9 @@ public class HomeController implements Initializable {
     public JFXButton sortBtn;
 
     public List<Movie> allMovies;
+
+    @FXML
+    public VBox mainBox;
 
     protected ObservableList<Movie> observableMovies = FXCollections.observableArrayList();
 
@@ -243,4 +253,38 @@ public class HomeController implements Initializable {
                 .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
                 .collect(Collectors.toList());
     }
+
+    public void loadView(String path){
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
+
+        try {
+//            mainBox.getChildren().clear();
+//            mainBox.getChildren().add(fxmlLoader.load());
+            Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+            Stage stage = (Stage)mainBox.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            String title = "Error";
+            String headerText = "Error while loading the view";
+            String contentText = "The following error occurred while loading the view: " + e.getMessage();
+            showExceptionAlert(title, headerText, contentText + e.getMessage(), new IllegalArgumentException(e));
+        }
+    }
+
+
+    public void loadHome() {
+        loadView("home-view.fxml");
+    }
+
+    public void loadWatchList() {
+        loadView("watch-list-view.fxml");
+    }
+
+    public void loadAbout() {
+        loadView("watch-list-view.fxml");
+
+    }
+
+
+
 }
