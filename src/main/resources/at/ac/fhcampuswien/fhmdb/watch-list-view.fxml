@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="at.ac.fhcampuswien.fhmdb.WatchListViewController"
-            prefHeight="400.0" prefWidth="600.0">
+<VBox style="-fx-background-color: F5C518;" fx:id="mainBox" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.fhmdb.WatchListViewController">
 
-</AnchorPane>
+    <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="347.0" spacing="20.0" style="-fx-background-color: black;">
+        <padding>
+            <Insets bottom="7.0" left="10.0" top="7.0" />
+        </padding>
+        <children>
+            <Label style="-fx-background-color: F5C518;" text="FHMDb">
+                <font>
+                    <Font name="Calibri Bold" size="24.0" />
+                </font>
+                <padding>
+                    <Insets left="2.0" right="2.0" />
+                </padding>
+            </Label>
+            <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" />
+            <AnchorPane prefHeight="28.0" prefWidth="309.0">
+                <children>
+                    <HBox prefHeight="30.0" prefWidth="200.0" spacing="15.0">
+                        <children>
+                            <Button mnemonicParsing="false" fx:id="homeBtn"  text="Home" />
+                            <Button mnemonicParsing="false" fx:id="watchlistBtn"  text="Watchlist" />
+                            <Button mnemonicParsing="false" fx:id="aboutBtn"  text="About" />
+                        </children>
+                    </HBox>
+                </children>
+            </AnchorPane>
+        </children>
+    </HBox>
+    <JFXListView fx:id="movieListView" stylesheets="@styles.css" VBox.vgrow="ALWAYS" />
+</VBox>

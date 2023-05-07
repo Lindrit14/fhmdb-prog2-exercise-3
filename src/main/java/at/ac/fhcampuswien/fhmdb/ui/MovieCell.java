@@ -1,7 +1,13 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.HomeController;
+import at.ac.fhcampuswien.fhmdb.WatchListViewController;
+import at.ac.fhcampuswien.fhmdb.data.Database;
+import at.ac.fhcampuswien.fhmdb.data.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.jfoenix.controls.JFXButton;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -12,6 +18,7 @@ import javafx.scene.paint.Color;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.stream.Collectors;
 
 public class MovieCell extends ListCell<Movie> {
@@ -19,13 +26,17 @@ public class MovieCell extends ListCell<Movie> {
     private final Label detail = new Label();
     private final Label genre = new Label();
     private final JFXButton detailBtn = new JFXButton("Show Details");
-    private final VBox layout = new VBox(title, detail, genre, detailBtn);
+    private final JFXButton watchlistBtn = new JFXButton("");
+    private final VBox layout = new VBox(title, detail, genre, watchlistBtn, detailBtn);
     private boolean collapsedDetails = true;
+    WatchlistRepository repository = new WatchlistRepository();
 
-    public MovieCell() {
+    public MovieCell(String buttonText) {
         super();
         // color scheme
         detailBtn.setStyle("-fx-background-color: #f5c518;");
+        watchlistBtn.setStyle("-fx-background-color: #f5c518;");
+        watchlistBtn.setText(buttonText);
         title.getStyleClass().add("text-yellow");
         detail.getStyleClass().add("text-white");
         genre.getStyleClass().add("text-white");
@@ -45,14 +56,37 @@ public class MovieCell extends ListCell<Movie> {
                 collapsedDetails = false;
                 detailBtn.setText("Hide Details");
             } else {
-                layout.getChildren().remove(4);
+                layout.getChildren().remove(5);
                 collapsedDetails = true;
                 detailBtn.setText("Show Details");
             }
             setGraphic(layout);
         });
 
+        if (watchlistBtn.getText().equals("Watchlist")){
+            watchlistBtn.setOnMouseClicked(mouseEvent -> {
+                try {
+                    repository.addToWatchlist(getItem());
+                } catch (SQLException e) {
+                    String title = "Error";
+                    String headerText = "Error while adding item to watchlist";
+                    String contentText = "The following error occurred while adding the item to watchlist:";
+                    showExceptionAlert(title, headerText, contentText, new DatabaseException(headerText, e));
+                }
+            });
+        } else if (watchlistBtn.getText().equals("Remove")) {
+            watchlistBtn.setOnMouseClicked(mouseEvent -> {
+                try {
+                    repository.removeFromWatchlist(getItem());
 
+                } catch (SQLException e) {
+                    String title = "Error";
+                    String headerText = "Error while removing item from watchlist";
+                    String contentText = "The following error occurred while removing the item from watchlist:";
+                    showExceptionAlert(title, headerText, contentText, new DatabaseException(headerText, e));
+                }
+            });
+        }
     }
 
     private VBox getDetails() {
@@ -150,6 +184,7 @@ public class MovieCell extends ListCell<Movie> {
         //stays open until client closes it
         alert.showAndWait();
     }
+
 
 
 
