@@ -66,6 +66,10 @@ public class Movie {
         return title;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getDescription() {
         return description;
     }
