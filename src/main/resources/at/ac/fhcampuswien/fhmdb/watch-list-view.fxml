@@ -26,9 +26,9 @@
                 <children>
                     <HBox prefHeight="30.0" prefWidth="200.0" spacing="15.0">
                         <children>
-                            <Button mnemonicParsing="false" fx:id="homeBtn"  text="Home" />
-                            <Button mnemonicParsing="false" fx:id="watchlistBtn"  text="Watchlist" />
-                            <Button mnemonicParsing="false" fx:id="aboutBtn"  text="About" />
+                            <Button mnemonicParsing="false" fx:id="homeBtn" onAction="#loadHome" text="Home" />
+                            <Button mnemonicParsing="false" fx:id="watchlistBtn" onAction="#loadWatchList"  text="Watchlist" />
+                            <Button mnemonicParsing="false" fx:id="aboutBtn" onAction="#loadAbout" text="About" />
                         </children>
                     </HBox>
                 </children>

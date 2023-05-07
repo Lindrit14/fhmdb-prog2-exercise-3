@@ -9,8 +9,13 @@ import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +68,40 @@ public class WatchListViewController {
         movieListView.setItems(observableMovies);   // set the items of the listview to the observable list
         movieListView.setCellFactory(movieListView -> new MovieCell("Remove")); // apply custom cells to the listview
     }
+
+
+    public void loadView(String path){
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(path));
+
+        try {
+//            mainBox.getChildren().clear();
+//            mainBox.getChildren().add(fxmlLoader.load());
+            Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+            Stage stage = (Stage)mainBox.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (IOException e) {
+            String title = "Error";
+            String headerText = "Error while loading the view";
+            String contentText = "The following error occurred while loading the view: " + e.getMessage();
+            showExceptionAlert(title, headerText, contentText + e.getMessage(), new IllegalArgumentException(e));
+        }
+    }
+
+
+    public void loadHome() {
+        loadView("home-view.fxml");
+    }
+
+    public void loadWatchList() {
+        loadView("watch-list-view.fxml");
+
+    }
+
+    public void loadAbout() {
+        loadView("watch-list-view.fxml");
+
+    }
+
 
 
 }
